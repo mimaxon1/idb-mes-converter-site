@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Локальная пакетная конвертация архивов SIMP LIGHT IDB и Delphin MES"
+      content="Конвертация архивов MES и IDB"
     />
     <title>IDB ↔ MES Bridge</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -16,11 +16,6 @@
       <header class="topbar">
         <div>
           <h1>IDB ↔ MES Bridge</h1>
-          <p class="subtitle">Пакетная конвертация без отправки файлов в интернет</p>
-        </div>
-        <div class="local-badge" aria-label="Файлы обрабатываются локально">
-          <span class="local-dot" aria-hidden="true"></span>
-          Данные остаются в браузере
         </div>
       </header>
 
@@ -28,8 +23,8 @@
         <div class="step-heading">
           <span class="step-number" aria-hidden="true">1</span>
           <div>
-            <h2 id="upload-title">Закинуть исходники</h2>
-            <p>Добавьте один или несколько MES/IDB. Формат проверяется по содержимому.</p>
+            <h2 id="upload-title">Исходные файлы</h2>
+            <p>MES или IDB.</p>
           </div>
         </div>
         <div class="drop-actions">
@@ -40,8 +35,8 @@
         </div>
         <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Выбрать или перетащить исходники">
           <span class="drop-icon" aria-hidden="true">↓</span>
-          <span>Перетащите исходники в эту область</span>
-          <span class="drop-hint">Можно добавить пачку IDB и MES-шаблонов</span>
+          <span>Перетащите файлы сюда</span>
+          <span class="drop-hint">MES / IDB</span>
         </div>
         <div class="file-list" id="file-list" aria-live="polite"></div>
       </section>
@@ -50,50 +45,50 @@
         <div class="step-heading">
           <span class="step-number" aria-hidden="true">2</span>
           <div>
-            <h2 id="target-title">Выбрать, во что перегнать</h2>
-            <p id="target-help">MES-файлы будут собраны в одноимённые IDB.</p>
+            <h2 id="target-title">Формат результата</h2>
+            <p id="target-help">MES → IDB</p>
           </div>
         </div>
         <div class="direction-switch" role="radiogroup" aria-label="Формат результата">
           <label class="direction-option">
             <input type="radio" name="target-format" value="IDB" checked />
-            <span>В IDB</span>
+            <span>IDB</span>
           </label>
           <label class="direction-option">
             <input type="radio" name="target-format" value="MES" />
-            <span>В MES</span>
+            <span>MES</span>
           </label>
         </div>
-        <p class="workflow-note" id="template-note" hidden>Достаточно одного настоящего MES нужного формата. Если шаблонов несколько, сайт подберёт их по дате, а дату результата возьмёт из IDB.</p>
+        <p class="workflow-note" id="template-note" hidden>Для IDB → MES нужен один настоящий MES-шаблон той же станции.</p>
       </section>
 
       <section class="workflow-card" aria-labelledby="save-title">
         <div class="step-heading">
           <span class="step-number" aria-hidden="true">3</span>
           <div>
-            <h2 id="save-title">Выбрать, куда сохранить всё</h2>
-            <p>Папка выбирается только на вашем компьютере.</p>
+            <h2 id="save-title">Куда сохранить</h2>
+            <p>Куда сохранить результат.</p>
           </div>
         </div>
         <div class="destination-options" role="radiogroup" aria-label="Способ сохранения">
           <label class="destination-option">
             <input type="radio" name="destination" value="downloads" checked />
             <span>
-              <strong>Скачать через браузер</strong>
-              <small>Появятся ссылки на все готовые файлы</small>
+              <strong>Скачать файлы</strong>
+              <small>Файлы сохранятся через браузер</small>
             </span>
           </label>
           <label class="destination-option" id="folder-option">
             <input type="radio" name="destination" value="folder" />
             <span>
-              <strong>Сохранить в выбранную папку</strong>
+              <strong>Сохранить в папку</strong>
               <small id="folder-name">Папка не выбрана</small>
             </span>
           </label>
           <button class="secondary-button folder-button" id="pick-folder" type="button">Выбрать папку</button>
         </div>
         <div class="conversion-action">
-          <button class="primary-button" id="convert-button" type="button" disabled>Перегнать всё и сохранить</button>
+          <button class="primary-button" id="convert-button" type="button" disabled>Конвертировать и сохранить</button>
           <div class="conversion-result" id="conversion-result" hidden>
             <strong id="conversion-summary"></strong>
             <div class="download-list" id="download-list"></div>
@@ -136,20 +131,6 @@
         </div>
       </section>
 
-      <section class="details-panel" id="details-panel" aria-labelledby="details-title" hidden>
-        <div class="section-heading">
-          <div>
-            <h2 id="details-title">Индекс IDB</h2>
-            <p>Канал, число записей и смещение блока внутри исходного файла.</p>
-          </div>
-        </div>
-        <div id="idb-details"></div>
-      </section>
-
-      <footer class="footer-note">
-        <span>Файлы не загружаются на сервер и не сохраняются.</span>
-        <span>Для IDB → MES достаточно одного MES-шаблона формата установки.</span>
-      </footer>
     </main>
     <script type="module" src="assets/app.min.js"></script>
   </body>
