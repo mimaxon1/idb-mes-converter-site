@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Локальная проверка архивов SIMP LIGHT IDB и Delphin MES"
+    />
+    <title>IDB ↔ MES Bridge</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <div>
+          <h1>IDB ↔ MES Bridge</h1>
+          <p class="subtitle">Локальная проверка архивов перед конвертацией</p>
+        </div>
+        <div class="local-badge" aria-label="Файлы обрабатываются локально">
+          <span class="local-dot" aria-hidden="true"></span>
+          Только на этом компьютере
+        </div>
+      </header>
+
+      <section class="drop-panel" aria-labelledby="drop-title">
+        <div class="drop-copy">
+          <h2 id="drop-title">Перетащите IDB или MES сюда</h2>
+          <p>Можно выбрать несколько файлов. Ни один байт не отправляется на сервер.</p>
+        </div>
+        <div class="drop-actions">
+          <button class="primary-button" id="pick-files" type="button">Выбрать файлы</button>
+          <button class="secondary-button" id="clear-files" type="button" disabled>Очистить</button>
+          <input id="file-input" type="file" accept=".idb,.IDB,.mes,.MES" multiple hidden />
+        </div>
+        <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Выбрать или перетащить файлы">
+          <span class="drop-icon" aria-hidden="true">↓</span>
+          <span>Перетащите файлы в эту область</span>
+          <span class="drop-hint">IDB / MES</span>
+        </div>
+      </section>
+
+      <section class="status-row" aria-live="polite">
+        <span id="status-text">Файлы ещё не выбраны</span>
+        <span id="status-detail"></span>
+      </section>
+
+      <section class="results-panel" aria-labelledby="results-title">
+        <div class="section-heading">
+          <div>
+            <h2 id="results-title">Результат проверки</h2>
+            <p>Формат определяется по содержимому файла, а не по расширению.</p>
+          </div>
+          <span class="result-count" id="result-count">0 файлов</span>
+        </div>
+        <div class="table-wrap">
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th scope="col">Файл</th>
+                <th scope="col">Формат</th>
+                <th scope="col">Размер</th>
+                <th scope="col">SHA-256</th>
+                <th scope="col">Каналы</th>
+                <th scope="col">Записи</th>
+                <th scope="col">Статус</th>
+              </tr>
+            </thead>
+            <tbody id="results-body">
+              <tr class="empty-row">
+                <td colspan="7">Добавьте один или несколько архивов для проверки.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="details-panel" id="details-panel" aria-labelledby="details-title" hidden>
+        <div class="section-heading">
+          <div>
+            <h2 id="details-title">Индекс IDB</h2>
+            <p>Канал, число записей и смещение блока внутри исходного файла.</p>
+          </div>
+        </div>
+        <div id="idb-details"></div>
+      </section>
+
+      <footer class="footer-note">
+        <span>Версия интерфейса 0.1.0</span>
+        <span>Реальный IDB ↔ MES writer подключается отдельным этапом.</span>
+      </footer>
+    </main>
+    <script type="module" src="assets/app.min.js"></script>
+  </body>
+</html>
