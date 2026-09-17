@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Локальная проверка архивов SIMP LIGHT IDB и Delphin MES"
+      content="Локальная пакетная конвертация архивов SIMP LIGHT IDB и Delphin MES"
     />
     <title>IDB ↔ MES Bridge</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
@@ -16,41 +16,101 @@
       <header class="topbar">
         <div>
           <h1>IDB ↔ MES Bridge</h1>
-          <p class="subtitle">Локальная проверка архивов перед конвертацией</p>
+          <p class="subtitle">Пакетная конвертация без отправки файлов в интернет</p>
         </div>
         <div class="local-badge" aria-label="Файлы обрабатываются локально">
           <span class="local-dot" aria-hidden="true"></span>
-          Только на этом компьютере
+          Данные остаются в браузере
         </div>
       </header>
 
-      <section class="drop-panel" aria-labelledby="drop-title">
-        <div class="drop-copy">
-          <h2 id="drop-title">Перетащите IDB или MES сюда</h2>
-          <p>Можно выбрать несколько файлов. Ни один байт не отправляется на сервер.</p>
+      <section class="workflow-card" aria-labelledby="upload-title">
+        <div class="step-heading">
+          <span class="step-number" aria-hidden="true">1</span>
+          <div>
+            <h2 id="upload-title">Закинуть исходники</h2>
+            <p>Добавьте один или несколько MES/IDB. Формат проверяется по содержимому.</p>
+          </div>
         </div>
         <div class="drop-actions">
           <button class="primary-button" id="pick-files" type="button">Выбрать файлы</button>
-          <button class="secondary-button" id="clear-files" type="button" disabled>Очистить</button>
+          <button class="secondary-button" id="clear-files" type="button" disabled>Очистить всё</button>
+          <span class="selected-file" id="source-name">Исходники не выбраны</span>
           <input id="file-input" type="file" accept=".idb,.IDB,.mes,.MES" multiple hidden />
         </div>
-        <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Выбрать или перетащить файлы">
+        <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Выбрать или перетащить исходники">
           <span class="drop-icon" aria-hidden="true">↓</span>
-          <span>Перетащите файлы в эту область</span>
-          <span class="drop-hint">IDB / MES</span>
+          <span>Перетащите исходники в эту область</span>
+          <span class="drop-hint">Можно добавить пачку IDB и MES-шаблонов</span>
+        </div>
+        <div class="file-list" id="file-list" aria-live="polite"></div>
+      </section>
+
+      <section class="workflow-card" aria-labelledby="target-title">
+        <div class="step-heading">
+          <span class="step-number" aria-hidden="true">2</span>
+          <div>
+            <h2 id="target-title">Выбрать, во что перегнать</h2>
+            <p id="target-help">MES-файлы будут собраны в одноимённые IDB.</p>
+          </div>
+        </div>
+        <div class="direction-switch" role="radiogroup" aria-label="Формат результата">
+          <label class="direction-option">
+            <input type="radio" name="target-format" value="IDB" checked />
+            <span>В IDB</span>
+          </label>
+          <label class="direction-option">
+            <input type="radio" name="target-format" value="MES" />
+            <span>В MES</span>
+          </label>
+        </div>
+        <p class="workflow-note" id="template-note" hidden>Для каждого IDB нужен настоящий MES-шаблон того же дня. Загрузите шаблоны вместе с исходниками.</p>
+      </section>
+
+      <section class="workflow-card" aria-labelledby="save-title">
+        <div class="step-heading">
+          <span class="step-number" aria-hidden="true">3</span>
+          <div>
+            <h2 id="save-title">Выбрать, куда сохранить всё</h2>
+            <p>Папка выбирается только на вашем компьютере.</p>
+          </div>
+        </div>
+        <div class="destination-options" role="radiogroup" aria-label="Способ сохранения">
+          <label class="destination-option">
+            <input type="radio" name="destination" value="downloads" checked />
+            <span>
+              <strong>Скачать через браузер</strong>
+              <small>Появятся ссылки на все готовые файлы</small>
+            </span>
+          </label>
+          <label class="destination-option" id="folder-option">
+            <input type="radio" name="destination" value="folder" />
+            <span>
+              <strong>Сохранить в выбранную папку</strong>
+              <small id="folder-name">Папка не выбрана</small>
+            </span>
+          </label>
+          <button class="secondary-button folder-button" id="pick-folder" type="button">Выбрать папку</button>
+        </div>
+        <div class="conversion-action">
+          <button class="primary-button" id="convert-button" type="button" disabled>Перегнать всё и сохранить</button>
+          <div class="conversion-result" id="conversion-result" hidden>
+            <strong id="conversion-summary"></strong>
+            <div class="download-list" id="download-list"></div>
+          </div>
         </div>
       </section>
 
       <section class="status-row" aria-live="polite">
-        <span id="status-text">Файлы ещё не выбраны</span>
+        <span id="status-text">Загрузите исходники</span>
         <span id="status-detail"></span>
       </section>
 
       <section class="results-panel" aria-labelledby="results-title">
         <div class="section-heading">
           <div>
-            <h2 id="results-title">Результат проверки</h2>
-            <p>Формат определяется по содержимому файла, а не по расширению.</p>
+            <h2 id="results-title">Проверка файлов</h2>
+            <p>Размер, SHA-256, каналы и число записей.</p>
           </div>
           <span class="result-count" id="result-count">0 файлов</span>
         </div>
@@ -69,7 +129,7 @@
             </thead>
             <tbody id="results-body">
               <tr class="empty-row">
-                <td colspan="7">Добавьте один или несколько архивов для проверки.</td>
+                <td colspan="7">Добавьте исходники для проверки.</td>
               </tr>
             </tbody>
           </table>
@@ -87,8 +147,8 @@
       </section>
 
       <footer class="footer-note">
-        <span>Версия интерфейса 0.3.0</span>
-        <span>Прямой writer IDB ↔ MES находится в локальном приложении.</span>
+        <span>Файлы не загружаются на сервер и не сохраняются.</span>
+        <span>Для IDB → MES используется загруженный MES-шаблон.</span>
       </footer>
     </main>
     <script type="module" src="assets/app.min.js"></script>
