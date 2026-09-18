@@ -208,6 +208,9 @@ h2 { font-size: 1.12rem; letter-spacing: -0.01em; }
 .output-row { font-size: 0.84rem; line-height: 1.4; }
 .output-ok { color: var(--success); }
 .output-error { color: var(--danger); }
+.output-partial { color: var(--warning, #b58a2b); }
+.output-stats { color: var(--text-muted, #5a6472); font-size: 0.78rem; margin-top: 2px; white-space: pre-line; }
+.output-warn-list { color: var(--warning, #b58a2b); margin-top: 2px; white-space: pre-line; }
 .output-row a { color: var(--accent-dark); font-weight: 700; text-decoration: none; }
 .output-row a:hover, .output-row a:focus-visible { text-decoration: underline; }
 
