@@ -7,7 +7,7 @@
       name="description"
       content="Конвертация архивов MES и IDB для Березовской ГРЭС"
     />
-    <title>IDB ↔ MES Bridge · Береза</title>
+    <title>IDB ↔ MES Bridge · Березовская ГРЭС</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -18,9 +18,9 @@
           <h1>IDB ↔ MES Bridge</h1>
           <p class="subtitle">Конвертер файлов станции</p>
         </div>
-        <div class="local-badge station-badge" role="status" aria-label="Включён режим Береза">
+        <div class="local-badge station-badge" role="status" aria-label="Включён режим Березовская ГРЭС">
           <span class="local-dot" aria-hidden="true"></span>
-          <span>Режим: <strong>Береза</strong></span>
+          <span>Режим: <strong>Березовская ГРЭС</strong></span>
         </div>
       </header>
 
@@ -28,7 +28,7 @@
         <div>
           <p class="station-mode-kicker">Текущий режим</p>
           <h2 id="station-mode-title">Только Березовская ГРЭС</h2>
-          <p>MES-файлы другой станции будут отклонены. Для IDB → MES используйте настоящий MES-шаблон Березы.</p>
+          <p>Структура MES Березовской ГРЭС уже встроена: IDB → MES работает без шаблона.</p>
         </div>
         <span class="station-mode-state">включён</span>
       </section>
@@ -73,7 +73,7 @@
             <span>MES</span>
           </label>
         </div>
-        <p class="workflow-note" id="template-note" hidden>Для IDB → MES нужен один настоящий MES-шаблон Березы с полем станции Berezovskaya.</p>
+        <p class="workflow-note" id="template-note" hidden>Для IDB → MES используется встроенный профиль Березовской ГРЭС — отдельный MES-файл не нужен.</p>
       </section>
 
       <section class="workflow-card" aria-labelledby="save-title">
