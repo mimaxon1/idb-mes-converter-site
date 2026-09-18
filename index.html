@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Конвертация архивов MES и IDB"
+      content="Конвертация архивов MES и IDB для Березовской ГРЭС"
     />
-    <title>IDB ↔ MES Bridge</title>
+    <title>IDB ↔ MES Bridge · Береза</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -16,8 +16,22 @@
       <header class="topbar">
         <div>
           <h1>IDB ↔ MES Bridge</h1>
+          <p class="subtitle">Конвертер файлов станции</p>
+        </div>
+        <div class="local-badge station-badge" role="status" aria-label="Включён режим Береза">
+          <span class="local-dot" aria-hidden="true"></span>
+          <span>Режим: <strong>Береза</strong></span>
         </div>
       </header>
+
+      <section class="station-mode" aria-labelledby="station-mode-title">
+        <div>
+          <p class="station-mode-kicker">Текущий режим</p>
+          <h2 id="station-mode-title">Только Березовская ГРЭС</h2>
+          <p>MES-файлы другой станции будут отклонены. Для IDB → MES используйте настоящий MES-шаблон Березы.</p>
+        </div>
+        <span class="station-mode-state">включён</span>
+      </section>
 
       <section class="workflow-card" aria-labelledby="upload-title">
         <div class="step-heading">
@@ -59,7 +73,7 @@
             <span>MES</span>
           </label>
         </div>
-        <p class="workflow-note" id="template-note" hidden>Для IDB → MES нужен один настоящий MES-шаблон той же станции.</p>
+        <p class="workflow-note" id="template-note" hidden>Для IDB → MES нужен один настоящий MES-шаблон Березы с полем станции Berezovskaya.</p>
       </section>
 
       <section class="workflow-card" aria-labelledby="save-title">
