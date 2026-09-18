@@ -73,7 +73,24 @@
             <span>MES</span>
           </label>
         </div>
-        <p class="workflow-note" id="template-note" hidden>Для IDB → MES используется встроенный профиль Березовской ГРЭС — отдельный MES-файл не нужен.</p>
+        <div class="mes-mode" id="mes-mode" hidden>
+          <p class="control-label">Режим MES</p>
+          <label class="mode-option">
+            <input id="profile-mes-mode" type="radio" name="mes-mode" value="profile" checked />
+            <span>
+              <strong>Профильный MES</strong>
+              <small>627 каналов Березовской ГРЭС</small>
+            </span>
+          </label>
+          <label class="mode-option">
+            <input id="full-mes-mode" type="radio" name="mes-mode" value="full" />
+            <span>
+              <strong>Полный MES</strong>
+              <small>все каналы IDB через проверенный vendor-профиль</small>
+            </span>
+          </label>
+          <p class="workflow-note" id="template-note">Профильный режим использует встроенную структуру на 627 каналов.</p>
+        </div>
       </section>
 
       <section class="workflow-card" aria-labelledby="save-title">

@@ -240,6 +240,21 @@ h2 { font-size: 1.12rem; letter-spacing: -0.01em; }
 .direction-option input:checked + span { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-dark); }
 .direction-option input:focus-visible + span { outline: 2px solid var(--accent); outline-offset: 2px; }
 
+.mes-mode { display: grid; gap: 8px; margin-top: 16px; }
+.mode-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  cursor: pointer;
+}
+.mode-option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.mode-option input { margin-top: 3px; accent-color: var(--accent); }
+.mode-option span { display: grid; gap: 2px; }
+.mode-option small { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+
 .template-card {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto minmax(150px, 0.55fr);
