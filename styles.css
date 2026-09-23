@@ -318,3 +318,76 @@ tbody tr:last-child td { border-bottom: 0; }
   #status-detail { text-align: left; }
   .footer-note { gap: 7px; }
 }
+
+.simple-shell {
+  width: min(680px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: clamp(44px, 12vh, 112px) 0 40px;
+}
+
+.simple-header { display: grid; justify-items: center; gap: 7px; text-align: center; }
+.simple-header h1 { font-size: clamp(2rem, 6vw, 2.75rem); letter-spacing: -0.04em; }
+.simple-header p { color: var(--muted); font-size: 0.96rem; }
+
+.simple-drop {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  margin-top: 34px;
+  padding: clamp(26px, 7vw, 48px) 20px;
+  border: 1px dashed #9aadb6;
+  border-radius: 16px;
+  background: var(--surface);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 140ms ease, background 140ms ease, transform 140ms ease;
+}
+.simple-drop:hover, .simple-drop.is-over, .simple-drop:focus-visible {
+  border-color: var(--accent);
+  background: #f8fcfc;
+  outline: none;
+}
+.simple-drop.is-over { transform: scale(1.01); }
+.simple-drop[aria-busy="true"] { pointer-events: none; opacity: 0.72; }
+.simple-drop-icon { color: var(--accent); font-size: 2.4rem; line-height: 1; }
+.simple-drop h2 { max-width: 510px; font-size: clamp(1.1rem, 3vw, 1.35rem); }
+.simple-drop p { color: var(--muted); font-size: 0.92rem; }
+.simple-pick {
+  margin-top: 7px;
+  padding: 11px 19px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+.simple-pick:hover, .simple-pick:focus-visible { background: var(--accent-dark); }
+
+.simple-privacy { margin-top: 15px; color: var(--muted); font-size: 0.82rem; text-align: center; }
+.simple-status {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  min-height: 50px;
+  margin-top: 18px;
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+}
+.simple-status strong { color: var(--text); font-size: 0.96rem; }
+.simple-status.is-busy strong { color: var(--accent-dark); }
+.simple-status.is-success strong { color: var(--success); }
+.simple-status.is-error strong { color: var(--danger); }
+.simple-result { display: grid; justify-items: center; gap: 13px; margin-top: 10px; }
+.simple-result[hidden], .simple-result details[hidden] { display: none; }
+.simple-result > a, .simple-result details a { color: var(--accent-dark); font-weight: 700; text-decoration: none; }
+.simple-result a:hover, .simple-result a:focus-visible { text-decoration: underline; }
+.simple-result details { color: var(--muted); font-size: 0.82rem; text-align: center; }
+.simple-result summary { cursor: pointer; }
+.simple-result details p { margin: 9px 0 5px; }
+
+@media (max-width: 520px) {
+  .simple-shell { width: min(100% - 24px, 680px); padding-top: 12vh; }
+  .simple-drop { min-height: 270px; padding-inline: 16px; }
+}

@@ -3,166 +3,42 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta
-      name="description"
-      content="Конвертация архивов MES и IDB для Березовской ГРЭС"
-    />
-    <title>IDB ↔ MES Bridge · Березовская ГРЭС</title>
+    <meta name="description" content="Простой конвертер IDB ↔ MES для Берёзовской ГРЭС" />
+    <title>IDB ↔ MES · Берёзовская ГРЭС</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
-    <link rel="stylesheet" href="styles.css?v=full-mes-20260918" />
+    <link rel="stylesheet" href="styles.css?v=auto-convert-20260923-r2" />
   </head>
   <body>
-    <main class="shell">
-      <header class="topbar">
-        <div>
-          <h1>IDB ↔ MES Bridge</h1>
-          <p class="subtitle">Конвертер файлов станции</p>
-        </div>
-        <div class="local-badge station-badge" role="status" aria-label="Включён режим Березовская ГРЭС">
-          <span class="local-dot" aria-hidden="true"></span>
-          <span>Режим: <strong>Березовская ГРЭС</strong></span>
-        </div>
+    <main class="simple-shell">
+      <header class="simple-header">
+        <h1>IDB ↔ MES</h1>
+        <p>Берёзовская ГРЭС</p>
       </header>
 
-      <section class="station-mode" aria-labelledby="station-mode-title">
-        <div>
-          <p class="station-mode-kicker">Текущий режим</p>
-          <h2 id="station-mode-title">Только Березовская ГРЭС</h2>
-          <p>Структура MES Березовской ГРЭС уже встроена: IDB → MES работает без шаблона.</p>
-        </div>
-        <span class="station-mode-state">включён</span>
+      <section class="simple-drop" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Бросить IDB или MES для конвертации">
+        <span class="simple-drop-icon" aria-hidden="true">↕</span>
+        <h2>Брось файл — второй формат скачается сам</h2>
+        <p>IDB → MES · MES → IDB</p>
+        <button class="simple-pick" id="pick-files" type="button">Выбрать файл</button>
+        <input id="file-input" type="file" accept=".idb,.IDB,.mes,.MES,.idbmeta,.IDBMETA" multiple hidden />
       </section>
 
-      <section class="workflow-card" aria-labelledby="upload-title">
-        <div class="step-heading">
-          <span class="step-number" aria-hidden="true">1</span>
-          <div>
-            <h2 id="upload-title">Исходные файлы</h2>
-            <p>MES или IDB.</p>
-          </div>
-        </div>
-        <div class="drop-actions">
-          <button class="primary-button" id="pick-files" type="button">Выбрать файлы</button>
-          <button class="secondary-button" id="clear-files" type="button" disabled>Очистить всё</button>
-          <span class="selected-file" id="source-name">Исходники не выбраны</span>
-          <input id="file-input" type="file" accept=".idb,.IDB,.mes,.MES" multiple hidden />
-        </div>
-        <div class="drop-zone" id="drop-zone" tabindex="0" role="button" aria-controls="file-input" aria-label="Выбрать или перетащить исходники">
-          <span class="drop-icon" aria-hidden="true">↓</span>
-          <span>Перетащите файлы сюда</span>
-          <span class="drop-hint">MES / IDB</span>
-        </div>
-        <div class="file-list" id="file-list" aria-live="polite"></div>
+      <p class="simple-privacy">Файл обрабатывается в браузере и не отправляется на сервер.</p>
+
+      <section class="simple-status" id="status-box" aria-live="polite" role="status">
+        <strong id="status-text">Готов к работе</strong>
+        <span id="status-detail">Перетащи сюда IDB или MES.</span>
       </section>
 
-      <section class="workflow-card" aria-labelledby="target-title">
-        <div class="step-heading">
-          <span class="step-number" aria-hidden="true">2</span>
-          <div>
-            <h2 id="target-title">Формат результата</h2>
-            <p id="target-help">MES → IDB</p>
-          </div>
-        </div>
-        <div class="direction-switch" role="radiogroup" aria-label="Формат результата">
-          <label class="direction-option">
-            <input type="radio" name="target-format" value="IDB" checked />
-            <span>IDB</span>
-          </label>
-          <label class="direction-option">
-            <input type="radio" name="target-format" value="MES" />
-            <span>MES</span>
-          </label>
-        </div>
-        <div class="mes-mode" id="mes-mode" hidden>
-          <p class="control-label">Режим MES</p>
-          <label class="mode-option">
-            <input id="profile-mes-mode" type="radio" name="mes-mode" value="profile" checked />
-            <span>
-              <strong>Профильный MES</strong>
-              <small>627 каналов Березовской ГРЭС</small>
-            </span>
-          </label>
-          <label class="mode-option">
-            <input id="full-mes-mode" type="radio" name="mes-mode" value="full" />
-            <span>
-              <strong>Полный MES</strong>
-              <small>все каналы IDB через проверенный vendor-профиль</small>
-            </span>
-          </label>
-          <p class="workflow-note" id="template-note">Профильный режим использует встроенную структуру на 627 каналов.</p>
-        </div>
+      <section class="simple-result" id="result-panel" hidden>
+        <a id="output-link" hidden></a>
+        <details id="sidecar-details" hidden>
+          <summary>Дополнительно</summary>
+          <p>Этот файл нужен только для максимально точного восстановления исходного IDB.</p>
+          <a id="sidecar-link"></a>
+        </details>
       </section>
-
-      <section class="workflow-card" aria-labelledby="save-title">
-        <div class="step-heading">
-          <span class="step-number" aria-hidden="true">3</span>
-          <div>
-            <h2 id="save-title">Куда сохранить</h2>
-            <p>Куда сохранить результат.</p>
-          </div>
-        </div>
-        <div class="destination-options" role="radiogroup" aria-label="Способ сохранения">
-          <label class="destination-option">
-            <input type="radio" name="destination" value="downloads" checked />
-            <span>
-              <strong>Скачать файлы</strong>
-              <small>Файлы сохранятся через браузер</small>
-            </span>
-          </label>
-          <label class="destination-option" id="folder-option">
-            <input type="radio" name="destination" value="folder" />
-            <span>
-              <strong>Сохранить в папку</strong>
-              <small id="folder-name">Папка не выбрана</small>
-            </span>
-          </label>
-          <button class="secondary-button folder-button" id="pick-folder" type="button">Выбрать папку</button>
-        </div>
-        <div class="conversion-action">
-          <button class="primary-button" id="convert-button" type="button" disabled>Конвертировать и сохранить</button>
-          <div class="conversion-result" id="conversion-result" hidden>
-            <strong id="conversion-summary"></strong>
-            <div class="download-list" id="download-list"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="status-row" aria-live="polite">
-        <span id="status-text">Загрузите исходники</span>
-        <span id="status-detail"></span>
-      </section>
-
-      <section class="results-panel" aria-labelledby="results-title">
-        <div class="section-heading">
-          <div>
-            <h2 id="results-title">Проверка файлов</h2>
-            <p>Размер, SHA-256, каналы и число записей.</p>
-          </div>
-          <span class="result-count" id="result-count">0 файлов</span>
-        </div>
-        <div class="table-wrap">
-          <table class="summary-table">
-            <thead>
-              <tr>
-                <th scope="col">Файл</th>
-                <th scope="col">Формат</th>
-                <th scope="col">Размер</th>
-                <th scope="col">SHA-256</th>
-                <th scope="col">Каналы</th>
-                <th scope="col">Записи</th>
-                <th scope="col">Статус</th>
-              </tr>
-            </thead>
-            <tbody id="results-body">
-              <tr class="empty-row">
-                <td colspan="7">Добавьте исходники для проверки.</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
     </main>
-    <script type="module" src="assets/app.min.js?v=full-mes-20260918"></script>
+    <script type="module" src="assets/app.min.js?v=auto-convert-20260923-r2"></script>
   </body>
 </html>
